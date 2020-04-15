@@ -1,0 +1,23 @@
+.reproducer {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  position: relative;
+  top: 10px;
+  padding-right: 25px;
+}
+
+.options {
+  display: flex;
+  flex-direction: row;
+  place-content: center;
+  place-items: center;
+  flex: 1;
+  margin-left: 50px;
+}
+
+@media (max-width: 500px) {
+  .reproducer {
+    padding-right: 10px;
+  }
+}

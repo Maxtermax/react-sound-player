@@ -1,0 +1,10 @@
+.player-timer {
+  font-family: "Roboto";
+  display: flex;
+  justify-content: space-between;
+  place-items: center;
+  color: var(--secondary);
+  padding: 20px;
+  padding-top: 0px;
+  font-size: 18px;
+}
