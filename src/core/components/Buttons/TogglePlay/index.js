@@ -1,33 +1,23 @@
-import React, { useReducer } from "react";
+import React, { useContext } from "react";
 import PlayCircleOutline from "@material-ui/icons/PlayCircleOutline";
 import PauseCircleOutline from "@material-ui/icons/PauseCircleOutline";
 import ButtonRound from "@/core/components/Buttons/Round";
+import SoundPlayerContext from "@/core/contexts/SoundPlayer";
 
-function reducer(state, action) {
-  switch (action.type) {
-    case "PLAY":
-      return { ...state, isPlaying: true };
-    case "PAUSE":
-      return { ...state, isPlaying: false };
-    default:
-      return { ...state };
-  }
-}
-
-export default function TogglePlay({ onToggle, ...rest }) {
-  const [state, dispatch] = useReducer(reducer, { isPlaying: false });
+export default function TogglePlay(props) {
+  const { tracks, progress, setPlaying } = useContext(SoundPlayerContext);
+  const isPlaying = tracks.some((track) => track.isPlaying) && progress > 0;
+  const isBuffering = tracks.some((track) => track.buffering);
 
   return (
     <ButtonRound
-      {...rest}
-      onClick={() => {
-        dispatch({ type: state.isPlaying ? "PAUSE" : "PLAY" });
-        if (onToggle) onToggle(!state.isPlaying);
-      }}
+      {...props}
+      onClick={() => setPlaying(!isPlaying)}
+      disabled={isBuffering}
     >
       {
         <>
-          {!state.isPlaying ? (
+          {!isPlaying ? (
             <PlayCircleOutline></PlayCircleOutline>
           ) : (
             <PauseCircleOutline></PauseCircleOutline>

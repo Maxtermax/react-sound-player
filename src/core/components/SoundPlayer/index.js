@@ -1,56 +1,22 @@
 import React, { useReducer } from "react";
 import PlayerControls from "@/core/components/PlayerControls";
 import SoundPlayerContext from "@/core/contexts/SoundPlayer";
+import { SoundPlayer as SoundPlayerStore } from "@/core/stores";
 import TracksList from "@/core/components/TracksList";
 import { reducer } from "./reducer";
 import "./style.css";
+import { useScrollTrack } from "@/core/hooks/useScrollTrack";
 
-const albums = {
-  1: {
-    name: "Currents",
-    cover: "https://i.imgur.com/WZXn6E7.jpg",
-    id: 1,
-  },
-  2: {
-    name: "Pop Food",
-    cover: "https://f4.bcbits.com/img/a1853711793_5.jpg",
-    id: 2,
-  },
-};
-
-const tracks = [
-  {
-    album: 1,
-    id: 1,
-    name: "The Less I Know the Better",
-    src: "/The Less I Know The Better_PvM79DJ2PmM.mp3",
-    selected: false,
-  },
-  {
-    album: 1,
-    id: 2,
-    name: "Let It Happen",
-    src: "/Tame Impala - Let It Happen (Official Audio)_-ed6UeDp1ek.mp3",
-    selected: false,
-  },
-  {
-    id: 3,
-    album: 2,
-    name: "Buttercup",
-    src: "/Buttercup_e2qG5uwDCW4.mp3",
-    selected: false,
-  },
-];
-
-export default function SoundPlayer() {
+export default function SoundPlayer(props) {
+  const { data } = props;
+  const { albums, tracks } = data;
   const [state, dispacher] = useReducer(reducer, {
-    expand: false,
-    tracks,
+    ...SoundPlayerStore,
     albums,
-    progress: 0,
-    duration: 0,
-    currentTime: 0,
+    tracks,
   });
+
+  useScrollTrack(state);
 
   function playTrack(id, play) {
     const $audio = document.querySelector(`[data-id='${id}']`);
@@ -71,34 +37,6 @@ export default function SoundPlayer() {
         value={{
           ...state,
           expand: state.expand,
-          setPrevTrack: () => {
-            if (window.interval) {
-              window.clearInterval(window.interval);
-              window.interval = null;
-            }
-            dispacher({ type: "SET_PLAYING", payload: false });
-            dispacher({ type: "SET_PREV_TRACK" });
-            dispacher({ type: "SET_BUFFERING", payload: true });
-            dispacher({ type: "SORT_BY_SELECTED" });
-            window.interval = setTimeout(() => {
-              dispacher({ type: "SET_BUFFERING", payload: false });
-              dispacher({ type: "SET_PLAYING", payload: true });
-            }, 4000);
-          },
-          setNextTrack: () => {
-            if (window.interval) {
-              window.clearInterval(window.interval);
-              window.interval = null;
-            }
-            dispacher({ type: "SET_PLAYING", payload: false });
-            dispacher({ type: "SET_NEXT_TRACK" });
-            dispacher({ type: "SET_BUFFERING", payload: true });
-            // dispacher({ type: "SORT_BY_SELECTED" });
-            window.interval = setTimeout(() => {
-              dispacher({ type: "SET_BUFFERING", payload: false });
-              dispacher({ type: "SET_PLAYING", payload: true });
-            }, 4000);
-          },
           setTime(event) {
             const { target } = event;
             const { currentTime, duration } = target;
@@ -115,8 +53,6 @@ export default function SoundPlayer() {
           },
           setExpand: (payload) => {
             dispacher({ type: "SET_EXPAND", payload });
-            const track = state.tracks.find((item) => item.selected);
-            if (track) dispacher({ type: "SORT_BY_SELECTED" });
           },
           setBuffering(payload) {
             dispacher({ type: "SET_BUFFERING", payload });
@@ -125,15 +61,11 @@ export default function SoundPlayer() {
             dispacher({ type: "SET_SELECTED", payload });
           },
           setPlaying: (payload) => {
-            const $togglePlay = document.getElementById("togglePlay");
-            if ($togglePlay) {
-              $togglePlay.click();
-            }
             dispacher({ type: "SET_PLAYING", payload });
             if (payload) {
               const track = state.tracks.find((item) => item.selected);
-              const notFound = !track;
-              if (notFound) {
+              const anySelected = !track;
+              if (anySelected) {
                 const [firstTrack] = tracks;
                 dispacher({ type: "SET_SELECTED", payload: firstTrack.id });
                 return playTrack(firstTrack.id, payload);

@@ -1,5 +1,6 @@
 import React, { useEffect, useContext, useRef } from "react";
 import SoundPlayerContext from "@/core/contexts/SoundPlayer";
+import Audio from "@/core/components/Audio";
 import LoadBar from "@/core/components/LoadBar";
 import "./style.css";
 
@@ -35,35 +36,19 @@ export default function TracksList() {
                   selected && "selected"
                 }`}
                 key={id}
+                data-track={id}
                 style={{ animationDelay: `${0.25 + index / 10}s` }}
                 onClick={() => setSelected(id)}
               >
                 {buffering && <LoadBar></LoadBar>}
                 {selected && (
-                  <audio
-                    onWaiting={() => setBuffering(true)}
-                    onLoadStart={() => {
-                      console.log("buffering");
-                      setTime({
-                        target: {
-                          currentTime: 0,
-                          duration: 0,
-                        },
-                      });
-                      setBuffering(true);
-                    }}
-                    onCanPlay={() => {
-                      setPlaying(true);
-                      console.log("can play");
-                    }}
-                    onEnded={() => setPlaying(false)}
-                    onTimeUpdate={(event) => {
-                      setTime(event);
-                      setBuffering(false);
-                    }}
+                  <Audio
+                    setTime={setTime}
+                    setPlaying={setPlaying}
+                    setBuffering={setBuffering}
+                    id={id}
                     src={src}
-                    data-id={id}
-                  ></audio>
+                  ></Audio>
                 )}
                 <div
                   className={`track-info__image ${isPlaying && "spin"}`}

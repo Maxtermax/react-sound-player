@@ -8,21 +8,40 @@ import SoundPlayerContext from "@/core/contexts/SoundPlayer";
 import "./style.css";
 
 export default function ReproduceOptions() {
-  const { setExpand, setPlaying, setPrevTrack, setNextTrack } = useContext(
+  const { setExpand, setSelected, tracks = [] } = useContext(
     SoundPlayerContext
   );
+
+  function setNextTrack(tracks = []) {
+    const currentPlaying = tracks.map((track) => track.isPlaying).indexOf(true);
+    const canPlayNext = currentPlaying !== -1 && tracks[currentPlaying + 1];
+    if (canPlayNext) {
+      const nextTrack = tracks[currentPlaying + 1].id;
+      return setSelected(nextTrack);
+    }
+    if (currentPlaying === -1) {
+      const [firstTrack] = tracks;
+      return setSelected(firstTrack.id);
+    }
+  }
+
+  function setPrevTrack(tracks = []) {
+    const currentPlaying = tracks.map((track) => track.isPlaying).indexOf(true);
+    const canPlayPrev = currentPlaying !== -1 && tracks[currentPlaying - 1];
+    if (canPlayPrev) {
+      const prevTrack = tracks[currentPlaying - 1].id;
+      setSelected(prevTrack);
+    }
+  }
 
   return (
     <div className="reproducer">
       <section className="options">
-        <ButtonRound onClick={setPrevTrack} style={{ zoom: 0.5 }}>
+        <ButtonRound onClick={() => setPrevTrack(tracks)} style={{ zoom: 0.5 }}>
           <FastRewind></FastRewind>
         </ButtonRound>
-        <ButtonTogglePlay
-          id="togglePlay"
-          onToggle={setPlaying}
-        ></ButtonTogglePlay>
-        <ButtonRound onClick={setNextTrack} style={{ zoom: 0.5 }}>
+        <ButtonTogglePlay></ButtonTogglePlay>
+        <ButtonRound onClick={() => setNextTrack(tracks)} style={{ zoom: 0.5 }}>
           <FastForward></FastForward>
         </ButtonRound>
       </section>

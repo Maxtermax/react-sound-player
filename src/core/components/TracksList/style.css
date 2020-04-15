@@ -51,9 +51,10 @@
   flex-direction: row;
   padding-bottom: 15px;
   padding-top: 15px;
-  padding-left: 10px;
+  padding-left: 12px;
   transition: all 0.35s ease-in;
   position: relative;
+  overflow: hidden;
 }
 
 .track-info--selected {
