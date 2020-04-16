@@ -1,5 +1,5 @@
 # React Sound Player
-This is sound player component made with reactjs, play online: [here](https://react-sound-player.maxtermax.now.sh)
+This is a sound player component made with reactjs, play online: [here](https://react-sound-player.maxtermax.now.sh)
 
 Features 
 - Code architecture designed to be easily testable
