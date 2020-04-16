@@ -18,13 +18,18 @@ export default function ToggleExpand({ onToggle }) {
   const [state, dispatch] = useReducer(reducer, { display: false });
   return (
     <ButtonRound
+      data-test="btn-toggle-expand"
       onClick={() => {
         if (onToggle) onToggle(!state.display);
         dispatch({ type: state.display ? "CLOSE" : "OPEN" });
       }}
       style={{ zoom: 0.5 }}
     >
-      {state.display ? <ExpandLess></ExpandLess> : <ExpandMore></ExpandMore>}
+      {state.display ? (
+        <ExpandMore data-test="icon-open"></ExpandMore>
+      ) : (
+        <ExpandLess data-test="icon-close"></ExpandLess>
+      )}
     </ButtonRound>
   );
 }

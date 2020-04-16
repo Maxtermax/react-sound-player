@@ -7,7 +7,6 @@ module.exports = {
       extensions: [".js", ".html"],
       alias: {
         "@": path.resolve(__dirname, "src"),
-        "@core": path.resolve(__dirname, "src/core"),
       },
     };
     return config;

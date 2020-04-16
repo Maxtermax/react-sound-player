@@ -2,10 +2,11 @@ import { useEffect } from "react";
 import DataProvider from "@/core/services/DataProvider";
 import { resolvePromise, logger, groupById, mapSelected } from "@/core/utils";
 
-export function useFetchData({ setLoading, setData, setError }) {
+export function useFetchData({ setLoading, setData, setError, Provider }) {
   useEffect(() => {
     async function getData() {
-      const DataSource = new DataProvider("U83_TK_JKRiWJ-PFjVpeeQ");
+      const DataFactory = DataProvider(Provider);
+      const DataSource = new DataFactory("U83_TK_JKRiWJ-PFjVpeeQ");
       setLoading(true);
       const { ok, error, result } = await resolvePromise(DataSource.get());
       if (ok) {
@@ -21,5 +22,5 @@ export function useFetchData({ setLoading, setData, setError }) {
       return setLoading(false);
     }
     getData();
-  }, [setLoading, setData, setError]);
+  }, [setLoading, setData, setError, Provider]);
 }

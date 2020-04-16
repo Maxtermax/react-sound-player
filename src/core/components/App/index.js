@@ -6,18 +6,20 @@ import ErrorMessage from "@/core/components/ErrorMessage";
 import "@/core/theme.css";
 import "./style.css";
 import { useFetchData } from "@/core/hooks/useFetchData";
+import interfaces from "@/core/interfaces";
+const { FetchProvider } = interfaces;
 
-function App() {
+function App({ Provider = FetchProvider }) {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
-  useFetchData({ setLoading, setData, setError });
+  useFetchData({ setLoading, setData, setError, Provider });
 
-  if (error) return <ErrorMessage></ErrorMessage>;
+  if (error) return <ErrorMessage data-test="error-message"></ErrorMessage>;
 
   if (loading) {
     return (
-      <PlaceCenter>
+      <PlaceCenter data-test="loading">
         <CircularProgress></CircularProgress>
       </PlaceCenter>
     );

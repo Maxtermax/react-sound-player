@@ -3,7 +3,7 @@ import SoundPlayerContext from "@/core/contexts/SoundPlayer";
 import LoadBar from "@/core/components/LoadBar";
 import "./style.css";
 
-const Audio = React.lazy(() => import("@core/components/Audio"));
+const Audio = React.lazy(() => import("@/core/components/Audio"));
 
 export default function TracksList() {
   const {
@@ -17,7 +17,8 @@ export default function TracksList() {
   } = useContext(SoundPlayerContext);
   const trackRef = useRef(null);
   useEffect(() => {
-    if (!expand) trackRef.current.scrollTo(0, 0);
+    if (!expand && trackRef.current && trackRef.current.scrollTo)
+      trackRef.current.scrollTo(0, 0);
   }, [expand]);
 
   return (
