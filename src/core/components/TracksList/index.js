@@ -1,8 +1,9 @@
-import React, { useEffect, useContext, useRef } from "react";
+import React, { useEffect, useContext, useRef, Suspense } from "react";
 import SoundPlayerContext from "@/core/contexts/SoundPlayer";
-import Audio from "@/core/components/Audio";
 import LoadBar from "@/core/components/LoadBar";
 import "./style.css";
+
+const Audio = React.lazy(() => import("@core/components/Audio"));
 
 export default function TracksList() {
   const {
@@ -42,13 +43,15 @@ export default function TracksList() {
               >
                 {buffering && <LoadBar></LoadBar>}
                 {selected && (
-                  <Audio
-                    setTime={setTime}
-                    setPlaying={setPlaying}
-                    setBuffering={setBuffering}
-                    id={id}
-                    src={src}
-                  ></Audio>
+                  <Suspense fallback={<LoadBar></LoadBar>}>
+                    <Audio
+                      setTime={setTime}
+                      setPlaying={setPlaying}
+                      setBuffering={setBuffering}
+                      id={id}
+                      src={src}
+                    ></Audio>
+                  </Suspense>
                 )}
                 <div
                   className={`track-info__image ${isPlaying && "spin"}`}

@@ -1,44 +1,27 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import SoundPlayer from "@/core/components/SoundPlayer";
 import PlaceCenter from "@/core/components/PlaceCenter";
-import DataProvider from "@/core/services/DataProvider";
-import { resolvePromise, logger, groupById, mapSelected } from "@/core/utils";
+import ErrorMessage from "@/core/components/ErrorMessage";
 import "@/core/theme.css";
 import "./style.css";
+import { useFetchData } from "@/core/hooks/useFetchData";
 
 function App() {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
+  useFetchData({ setLoading, setData, setError });
 
-  useEffect(() => {
-    async function getData() {
-      const DataSource = new DataProvider("U83_TK_JKRiWJ-PFjVpeeQ");
-      setLoading(true);
-      const { ok, error, result } = await resolvePromise(DataSource.get());
-      if (ok) {
-        const { albums = [], tracks = [] } = result;
-        setData({
-          albums: groupById(albums),
-          tracks: mapSelected(tracks),
-        });
+  if (error) return <ErrorMessage></ErrorMessage>;
 
-        return setLoading(false);
-      }
-      logger(error);
-      setError(true);
-      return setLoading(false);
-    }
-    getData();
-  }, []);
-
-  if (loading)
+  if (loading) {
     return (
       <PlaceCenter>
         <CircularProgress></CircularProgress>
       </PlaceCenter>
     );
+  }
 
   return (
     <main>
