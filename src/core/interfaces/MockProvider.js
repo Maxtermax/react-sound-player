@@ -1,1 +1,3 @@
-export default class MockProvider {}
+export default class MockProvider {
+  fetchTracks() {}
+}

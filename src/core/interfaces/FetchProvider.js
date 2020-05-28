@@ -4,7 +4,7 @@ export default class FetchProvider {
   constructor(token = "") {
     this.token = token;
   }
-  get() {
+  fetchTracks() {
     return window
       .fetch(`${BASE_URL}/q/WqM5dTtc?token=${this.token}`, {
         method: "GET",

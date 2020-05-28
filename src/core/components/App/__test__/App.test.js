@@ -7,12 +7,12 @@ import { act } from "react-dom/test-utils";
 import interfaces from "../../../interfaces";
 const { MockProvider } = interfaces;
 class RejectGetMethod extends MockProvider {
-  get() {
+  fetchTracks() {
     return Promise.reject(new Error("MOCK"));
   }
 }
 class FakeTrackList extends MockProvider {
-  get() {
+  fetchTracks() {
     return Promise.resolve({
       albums: [
         {

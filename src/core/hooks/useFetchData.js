@@ -8,7 +8,9 @@ export function useFetchData({ setLoading, setData, setError, Provider }) {
       const DataFactory = DataProvider(Provider);
       const DataSource = new DataFactory("U83_TK_JKRiWJ-PFjVpeeQ");
       setLoading(true);
-      const { ok, error, result } = await resolvePromise(DataSource.get());
+      const { ok, error, result } = await resolvePromise(
+        DataSource.fetchTracks()
+      );
       if (ok) {
         const { albums = [], tracks = [] } = result;
         setData({
