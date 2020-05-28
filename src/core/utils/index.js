@@ -18,9 +18,14 @@ export function groupById(data) {
 }
 
 export function resolvePromise(promise) {
-  return promise
-    .then((result) => Promise.resolve({ ok: true, error: null, result }))
-    .catch((error) => Promise.resolve({ error, ok: false, result: null }));
+  return new Promise((resolve, reject) => {
+    promise
+      .then((result) => resolve({ ok: true, error: null, result }))
+      .catch((error) => resolve({ error, ok: false, result: null }));
+    setTimeout(() => {
+      reject(new Error("TIMEOUT"));
+    }, 5000);
+  });
 }
 
 function prefixDigit(digit) {

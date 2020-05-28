@@ -8,15 +8,6 @@
   cursor: pointer;
 }
 
-.progress:hover {
-  height: 15px;
-  margin-bottom: 5px;
-  padding-bottom: 0px;
-  position: relative;
-  top: 0px;
-  margin-bottom: 0px;
-}
-
 .progress__fill {
   background: var(--fourth);
   padding: 0px;
