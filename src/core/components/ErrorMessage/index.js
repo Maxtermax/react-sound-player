@@ -7,7 +7,7 @@ export default function ErrorMessage() {
     <div className="error-message">
       <Announcement></Announcement>
       <p className="error-message__text">
-        Ocurrio un error interno, intenta mas tarde.
+        Something went wrong, try later please.
       </p>
     </div>
   );

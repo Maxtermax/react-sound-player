@@ -1,35 +1,13 @@
 import React from "react";
 import Enzyme, { mount } from "enzyme";
 import Adapter from "enzyme-adapter-react-16";
-Enzyme.configure({ adapter: new Adapter() });
 import App from "../";
 import { act } from "react-dom/test-utils";
-import interfaces from "../../../interfaces";
-const { MockProvider } = interfaces;
-class RejectGetMethod extends MockProvider {
-  fetchTracks() {
-    return Promise.reject(new Error("MOCK"));
-  }
-}
-class FakeTrackList extends MockProvider {
-  fetchTracks() {
-    return Promise.resolve({
-      albums: [
-        {
-          id: 1,
-          name: "Mock album",
-        },
-      ],
-      tracks: [
-        {
-          id: 1,
-          album: 1,
-          name: "Mockt track",
-        },
-      ],
-    });
-  }
-}
+import RejectGetMethod from "./RejectGetMethod";
+import FakeTrackList from "./FakeTrackList";
+
+Enzyme.configure({ adapter: new Adapter() });
+
 describe("<App/>", () => {
   let wrapper;
   it("render app with mock provider, simulating an error message", async () => {

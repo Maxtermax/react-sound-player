@@ -1,12 +1,10 @@
-import { BASE_URL } from "@/core/services/DataProvider";
-
 export default class FetchProvider {
   constructor(token = "") {
     this.token = token;
   }
   fetchTracks() {
     return window
-      .fetch(`${BASE_URL}/q/WqM5dTtc?token=${this.token}`, {
+      .fetch(`${process.env.API_URL}/q/WqM5dTtc?token=${this.token}`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",

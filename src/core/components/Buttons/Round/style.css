@@ -58,6 +58,6 @@
 .btn-round > svg {
   animation-name: appear;
   animation-duration: 1s;
-  color: white;
+  color: var(--primary-button);
   font-size: 4rem;
 }

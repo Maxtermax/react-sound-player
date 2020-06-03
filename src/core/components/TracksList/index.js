@@ -65,7 +65,6 @@ export default function TracksList() {
                 <div className="wrap-info-content">
                   <p className="track-info__album ">
                     {albums[album].name}
-                    <span className="track-info__album__mark "></span>
                   </p>
                   <b className="track-info__track">{name}</b>
                 </div>

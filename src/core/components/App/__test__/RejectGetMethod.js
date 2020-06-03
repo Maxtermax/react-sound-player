@@ -1,7 +1,7 @@
 import interfaces from "../../../interfaces";
 const { MockProvider } = interfaces;
 
-module.exports = class RejectGetMethod extends MockProvider {
+export default class RejectGetMethod extends MockProvider {
   fetchTracks() {
     return Promise.reject(new Error("MOCK"));
   }
